@@ -8,8 +8,15 @@ export default class TargetInfo {
 
     // if RE and GD both given, verify if they mached.
     isAllEmpty() {
-        return this.givenDomain || this.givenId || this.paths || this.keyCode || this.resolvedEndpoint;
+        return !(this.givenDomain || this.givenId || this.paths || this.keyCode || this.resolvedEndpoint);
     }
+
+    isMatched() {
+        if (!(this.givenDomain && this.resolvedEndpoint)) return false; // maybe this counts as an early return...
+        else return this.givenDomain.trim() == this.resolvedEndpoint.trim()
+    }
+
+
 
     constructor(
         givenDomain: string | null = null,
