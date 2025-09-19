@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+code {
+    @apply inline p-1.5 py-0.5 mx-1 border-zinc-500 shadow-md transition hover:shadow-lg shadow-zinc-700 select-all text-blue-500 font-semibold bg-white/90 rounded-lg;
+}
+
+ul>li>:nth-child(2) {
+    @apply indent-6 mt-0.5
+}
+
+li>ol {
+    @apply indent-2 pl-4
+}
+
+h2 {
+    @apply text-2xl font-semibold mb-1.5 mt-2 italic
+}
