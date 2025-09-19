@@ -13,7 +13,7 @@ export default class TargetInfo {
 
     isMatched() {
         if (!(this.givenDomain && this.resolvedEndpoint)) return false; // maybe this counts as an early return...
-        else return this.givenDomain.trim() == this.resolvedEndpoint.trim()
+        else return this.givenDomain.trim() == this.resolvedEndpoint.trim().split(":")[0].replace("https://", "")
     }
 
 
@@ -25,10 +25,10 @@ export default class TargetInfo {
         paths: string | null = null,
         keyCode: string | null = null
     ) {
-        this.givenDomain = givenDomain;
-        this.givenId = givenId;
-        this.paths = paths;
-        this.keyCode = keyCode;
-        this.resolvedEndpoint = resolvedEndpoint;
+        this.givenDomain = givenDomain ? givenDomain.toLowerCase() : null;
+        this.givenId = givenId ? givenId.toLowerCase() : null;
+        this.paths = paths ? paths.toLowerCase() : null;
+        this.keyCode = keyCode ? keyCode.toLowerCase() : null;
+        this.resolvedEndpoint = resolvedEndpoint ? resolvedEndpoint.toLowerCase() : null;
     }
 }
