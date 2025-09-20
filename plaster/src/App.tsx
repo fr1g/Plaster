@@ -1,10 +1,13 @@
-
+import { useNavigate } from "react-router"
+import Paper from "./Paper"
+import { Button } from '@headlessui/react'
 
 function App() {
 
+    const navigate = useNavigate();
+
     return (
-        <div className="!ROOT w-full min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-900 
-        to-zinc-800 text-white text-shadow-amber-50 text-large grid p-5 items center gap-3">
+        <Paper>
             <div className="w-full flex flex-col place-items-center gap-5">
                 <div className="w-full text-5xl text-center grow-3 grid items-end">
                     <h1>Plaster</h1>
@@ -21,6 +24,13 @@ function App() {
             <div className="border-t-2 pt-5 mx-auto w-4/5 p-3 grid gap-3">
                 <div>
                     <h2>How to use?</h2>
+                    <div>
+                        <h3 className="text-xl">
+                            To generate a plaster link easily, use this tool: <span className="mx-1"></span>
+                            <Button className={"border px-1 rounded-lg animated-block bg-zinc-100 text-blue-500  "} onClick={() => navigate('/tool')} >Encoder</Button>
+                        </h3>
+                        <br />
+                    </div>
                     <p>
                         Let's go back to the link formulae: <code className=" break-all md:break-keep">https://plaster.vot.moe/app/.id.your.srv.domain\route\to\your\app?param@base64OfYourSite@</code><br />
                     </p>
@@ -87,7 +97,7 @@ function App() {
                 </div>
             </div>
 
-        </div>
+        </Paper>
     )
 }
 

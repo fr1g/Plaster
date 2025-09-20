@@ -8,6 +8,9 @@ const PeelNode = Const.peel;
 const Endpoint = import.meta.env.DEV ? Const.localhost : Const.publicHost;
 
 const Resolver = {
+    setId: (id: string): string => {
+        return `.${id}.`;
+    },
     peel: (url: string): string => {
         if (url.includes(Endpoint) && url.includes(PeelNode)) return url.split(PeelNode)[1];
         else return url;
@@ -44,8 +47,10 @@ const Resolver = {
         // your.srv.domain/route/to/your/app?param
 
         const got: AddressComponent[] | null = tryGetAddrComp(cleaned);
-        const gotDomain = got ? (got[0].combine()) : "",
-            gotPath = cleaned.includes("/") ? cleaned.replace(gotDomain, "") : "";
+        const gotDomain = got ? (got[0].combine()) : "";
+        let gotPath = cleaned.includes("/") ? cleaned.replace(gotDomain, "") : "";
+        const fixRegex = /:([^/]+)\//gi;
+        if (gotPath.startsWith(":") && gotPath.match(fixRegex)) gotPath = gotPath.replace(fixRegex, "/");
 
         let result: TargetInfo | null = null;
         try {

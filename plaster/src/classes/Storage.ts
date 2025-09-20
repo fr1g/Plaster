@@ -14,12 +14,12 @@ export default class Storage {
 
     open(visiting: VisitInfo) {
         const newOne: SubSvc = {};
-        this.dictionary[visiting.host] = newOne;
+        this.dictionary[visiting.ipUseIdAsHost ? visiting.id : visiting.host] = newOne;
     }
 
     put(visiting: VisitInfo, refreshLastVisit = true) {
-        if (!this.dictionary[visiting.host]) this.open(visiting); // nothing exisiting visits under a domain or an addr.
-        this.dictionary[visiting.host][visiting.id] = visiting;
+        if (!this.dictionary[visiting.ipUseIdAsHost ? visiting.id : visiting.host]) this.open(visiting); // nothing exisiting visits under a domain or an addr.
+        this.dictionary[visiting.ipUseIdAsHost ? visiting.id : visiting.host][visiting.id] = visiting;
         if (refreshLastVisit) this.lastVisit = visiting;
     }
 

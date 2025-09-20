@@ -26,7 +26,12 @@ export default function tryGetAddrComp(text: string): null | AddressComponent[] 
         // 提取端口号（如果存在）
         if (match[1]) {
             domainComponent = match[1];
-            port = fullMatch.replace(domainComponent, "");
+            try {
+                port = parseInt(fullMatch.replace(domainComponent, ""));
+            } catch (ex) { // idiot eslint
+                console.log(ex)
+                port = null;
+            }
             value = value!.replace(/:\d+$/, '');
         }
 
