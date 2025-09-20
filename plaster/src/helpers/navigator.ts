@@ -4,7 +4,7 @@ import Const from "../consts";
 import Resolver from "./pathResolver";
 
 const Navigator = {
-    eventHandler: { // 
+    eventHandler: { // if the iframe got parameters or anchors, before submitting to plaster, MUST make sure: every param value AND anchor GOT ENCODED as component.
         onNavigate: () => {
 
         },
