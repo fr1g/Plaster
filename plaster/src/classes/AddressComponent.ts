@@ -1,5 +1,5 @@
 export default class AddressComponent {
-    type: 'IPv4' | 'IPv6' | 'Domain';
+    type: 'IPv4' | 'IPv6' | 'Domain' | 'None';
     host: string;
     port: number | null;
 
@@ -7,7 +7,7 @@ export default class AddressComponent {
         return this.port ? `${this.host}:${this.port}` : this.host;
     }
 
-    constructor(type: 'IPv4' | 'IPv6' | 'Domain', host: string, port: string | number | null) {
+    constructor(type: 'IPv4' | 'IPv6' | 'Domain' | 'None', host: string, port: string | number | null) {
         this.type = type
         this.host = host
         if (typeof port === "string" && port.includes(":")) this.port = parseInt(port.replace(":", ""));

@@ -6,7 +6,7 @@ export default function tryGetAddrComp(text: string): null | AddressComponent[] 
     let match;
 
     while ((match = regex.exec(text)) !== null) {
-        let type: 'IPv4' | 'IPv6' | 'Domain', value, domainComponent, port;
+        let type: 'IPv4' | 'IPv6' | 'Domain' | 'None', value, domainComponent, port;
         const fullMatch = match[0];
 
         // 确定匹配的类型
@@ -16,6 +16,8 @@ export default function tryGetAddrComp(text: string): null | AddressComponent[] 
         } else if (fullMatch.startsWith('[')) {
             type = 'IPv6';
             value = fullMatch.replace(/[\[\]]/g, ''); // eslint-disable-line
+        } else if (!fullMatch.includes(".")) {
+            continue;
         } else {
             type = 'Domain';
             value = fullMatch;
@@ -25,7 +27,7 @@ export default function tryGetAddrComp(text: string): null | AddressComponent[] 
         if (match[1]) {
             domainComponent = match[1];
             port = fullMatch.replace(domainComponent, "");
-            value = value.replace(/:\d+$/, '');
+            value = value!.replace(/:\d+$/, '');
         }
 
         matches.push(new AddressComponent(type, value, port || null))

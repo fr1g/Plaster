@@ -14,6 +14,7 @@ const Resolver = {
     },
     tryPickId: (rawUrl: string): string | null => { // resolving the very first .blablabla. as id
         const url = Resolver.peel(rawUrl), pattern = /\.(.*?)\./g;
+        if (!url.startsWith(".")) return null;
         let got: string | null = null, match;
 
         if ((match = pattern.exec(url)) !== null)
