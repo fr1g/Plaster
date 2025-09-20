@@ -4,7 +4,7 @@ export default class AddressComponent {
     port: number | null;
 
     combine() {
-        return `${this.host}:${this.port}`;
+        return this.port ? `${this.host}:${this.port}` : this.host;
     }
 
     constructor(type: 'IPv4' | 'IPv6' | 'Domain', host: string, port: string | number | null) {

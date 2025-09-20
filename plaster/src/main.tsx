@@ -11,6 +11,7 @@ createRoot(document.getElementById('root')!).render(
         <Routes>
             <Route index element={<App />} />
             <Route path='/tool' element={<Encoder />} />
+            <Route path='/app' element={<Entrance />} />
             <Route path='/app/:props' element={<Entrance />} />
             <Route path='/app/:props/*' element={<Entrance />} />
             <Route path='/*' element={<Error />} />

@@ -4,6 +4,14 @@ import Const from "../consts";
 import Resolver from "./pathResolver";
 
 const Navigator = {
+    eventHandler: { // 
+        onNavigate: () => {
+
+        },
+        onPageLoaded: () => {
+
+        }
+    },
     raise: (info: string) => {
         console.warn(info);
 
