@@ -9,6 +9,7 @@ const Navigator = {
 
         },
         onPageLoaded: () => {
+            // tab name: ${document.title} [Plaster]
 
         }
     },
