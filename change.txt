@@ -1,0 +1,9 @@
+当前URL格式太混乱。可以改为：
+plaster.vot.moe/:localStorageIndexId#!paths?paramList#hash
+
+其中：
+:lSII =>
+	以!开头，表示这是初次访问，其实是一段加密后的host信息
+	以@开头，表示这是调取本地存储的信息，实际上是本地存储的记录索引
+	以$开头，表示这是一个未被加密的host信息
+
