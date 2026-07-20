@@ -1,31 +1,32 @@
-import VisitInfo from "./VisitInfo";
+import type TargetInfo from "./TargetInfo";
 
 export interface SameDomain {
-    [key: string]: SubSvc;
+    [key: string]: TargetInfo;
 }
 
-export interface SubSvc {
-    [key: string]: VisitInfo;
-}
 
 export default class Storage {
-    lastVisit: VisitInfo | null = null;
+    lastVisit: TargetInfo | null = null;
     dictionary: SameDomain = {};
 
-    open(visiting: VisitInfo) {
-        const newOne: SubSvc = {};
-        this.dictionary[visiting.ipUseIdAsHost ? visiting.id : visiting.host] = newOne;
+    open(visiting: TargetInfo) {
+        this.dictionary[visiting.id] = visiting;
+
+        return this;
     }
 
-    put(visiting: VisitInfo, refreshLastVisit = true) {
-        if (!this.dictionary[visiting.ipUseIdAsHost ? visiting.id : visiting.host]) this.open(visiting); // nothing exisiting visits under a domain or an addr.
-        this.dictionary[visiting.ipUseIdAsHost ? visiting.id : visiting.host][visiting.id] = visiting;
+    save(visiting: TargetInfo, refreshLastVisit = true) {
+        if (!this.dictionary[visiting.id]) this.open(visiting); // nothing existing visits under a domain or an addr.
+        this.dictionary[visiting.id] = visiting;
         if (refreshLastVisit) this.lastVisit = visiting;
+
+        return this;
     }
 
-    delete(host: string, id: string | null = null) { // todo maybe unexpected behaviour 
-        if (!id) delete this.dictionary[host];
-        else delete this.dictionary[host][id];
+    delete(id: string) { // todo maybe unexpected behaviour 
+        delete this.dictionary[id];
+
+        return this;
     }
 
 }

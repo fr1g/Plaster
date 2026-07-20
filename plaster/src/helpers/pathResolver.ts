@@ -4,64 +4,42 @@ import Const from "../consts";
 import Base64Helper from "./base64";
 import tryGetAddrComp from "./hostPortEasyRecognize";
 
-const PeelNode = Const.peel;
-const Endpoint = import.meta.env.DEV ? Const.localhost : Const.publicHost;
+const Endpoint = import.meta.env.DEV ? Const.localhost : `${location.protocol}//${location.host}`;
 
 const Resolver = {
-    setId: (id: string): string => {
-        return `.${id}.`;
+    genId: (id: string): string => {
+        return `<@${id}>`;
     },
     peel: (url: string): string => {
-        if (url.includes(Endpoint) && url.includes(PeelNode)) return url.split(PeelNode)[1];
+        if (url.startsWith(Endpoint)) return url.replace(Endpoint, "");
         else return url;
     },
-    tryPickId: (rawUrl: string): string | null => { // resolving the very first .blablabla. as id
-        const url = Resolver.peel(rawUrl), pattern = /\.(.*?)\./g;
-        if (!url.startsWith(".")) return null;
+    tryPickId: (rawUrl: string): string | null => {
+        const url = Resolver.peel(rawUrl), pattern = /\<@(.*?)\>/g;
+        if (!url.startsWith("<@")) return null;
         let got: string | null = null, match;
 
         if ((match = pattern.exec(url)) !== null)
             got = match[0];
 
-        return got;
-    },
-    tryPickKeyCode: (rawUrl: string): string | null => {
-        const url = Resolver.peel(rawUrl), pattern = /@(.*?)@/g;
-        let got: string | null = null, match;
-
-        if ((match = pattern.exec(url)) !== null)
-            got = match[0];
-
-        // return got === null ? null : got.substring(1, got.length - 1);
-        // return got && got.substring(1, got.length - 1);
         return got;
     },
     tryResolveUrl: (rawUrl: string): TargetInfo | null => {
+        // to get additional paths, params and hash that directly added after ID or 'andgoto'. requiring a full href of current page
 
         const url = Resolver.peel(rawUrl);
+        const gotId = Resolver.tryPickId(rawUrl);
 
-        const gotId = Resolver.tryPickId(rawUrl), // id || not present
-            gotKeyCode = Resolver.tryPickKeyCode(rawUrl); // kc || not present
-        const keyCodeBase64 = gotKeyCode && gotKeyCode.substring(1, gotKeyCode.length - 1);
-        const cleaned = url.replaceAll(gotId ?? "", "").replaceAll(gotKeyCode ?? "", "").replaceAll("\\", "/");
-        // your.srv.domain/route/to/your/app?param
-
-        const got: AddressComponent[] | null = tryGetAddrComp(cleaned);
-        const gotDomain = got ? (got[0].combine()) : "";
-        let gotPath = cleaned.includes("/") ? cleaned.replace(gotDomain, "") : "";
-        const fixRegex = /:([^/]+)\//gi;
-        if (gotPath.startsWith(":") && gotPath.match(fixRegex)) gotPath = gotPath.replace(fixRegex, "/");
 
         let result: TargetInfo | null = null;
         try {
-            result = new TargetInfo(gotDomain, (keyCodeBase64 ? Base64Helper.base64ToString(keyCodeBase64) : null), gotId, gotPath, keyCodeBase64);
 
-        } catch (ex: any) { // eslint-disable-line
+
+        } catch (ex: any) {
             console.error(ex);
-            console.error(`Related got keycode: ${gotKeyCode}`)
         }
 
-        if (result && result.isAllEmpty() || result === null) return null;
+        if (result === null || (result as TargetInfo).isAllEmpty()) return null;
         return result;
 
     }

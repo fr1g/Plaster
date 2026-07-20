@@ -1,9 +1,6 @@
-当前URL格式太混乱。可以改为：
-plaster.vot.moe/:localStorageIndexId#!paths?paramList#hash
+全大写的部分为占位符
+既然要达成的目的是隐藏端口号，那么只需要将服务在本地通过导入链接映射为一个对象就可以了
+@PLASTER/set/ID/as/HIDDEN_DATA/andgoto/PATHS?PARAM#HASH
+hiddendata可以包含path但是安全起见不能包含params和hash。在存储的时候包含path是为了照顾到可能的分应用的情况。
 
-其中：
-:lSII =>
-	以!开头，表示这是初次访问，其实是一段加密后的host信息
-	以@开头，表示这是调取本地存储的信息，实际上是本地存储的记录索引
-	以$开头，表示这是一个未被加密的host信息
-
+@PLASTER/<@ID>/PATH?PARAM#HASH
